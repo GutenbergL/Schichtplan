@@ -14,7 +14,7 @@ public class Storage {
 	 try (BufferedReader storagedrive = new BufferedReader(new FileReader(memory));){
 		 int counter =0;
 		 String input;
-		 List<String> shiftSchedule = new ArrayList<>();
+		 List <Employee> shiftSchedule = new ArrayList<>();
 		
 		 
 		 while((input = storagedrive.readLine()) != null) {

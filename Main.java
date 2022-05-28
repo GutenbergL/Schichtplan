@@ -10,4 +10,8 @@ public class Main {
 		UserInterface user = new UserInterface();
 		user.userInterface();
 	}
+	
+	public void showShiftSchedule() {
+		
+	}
 }
