@@ -1,26 +1,26 @@
 
+
+
+
 public class Shift {
+
 	private String name;
-	private String date;
-	private String time;
+	Employee employee;
 	
-	public Shift(String name, String date, String time) {
+	public Shift(String name, Employee employee) {
 		this.name = name;
-		this.date = date;
-		this.time = time;
+		this.employee = employee;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getDate() {
-		return date;
+	public Employee getEmployee() {
+		return employee;
 	}
-
-	public String getTime() {
-		return time;
-	}
+	
+	
 	
 	
 }

@@ -1,41 +1,26 @@
-import java.util.ArrayList;
-
 public class Employee {
 
 	private String name;
-	private String day;
-	private double date;
-	private double time;
-	Shift shifts;
+	private int id = 1000;
+	static int idUpp;
 
-	public Employee(String name, String day, double date, double time, Shift shifts) {
+	public Employee(String name) {
+		idUpp++;
 		this.name = name;
-		this.day = day;
-		this.date = date;
-		this.time = time;
-		this.shifts = shifts;
+		this.id = idUpp;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getDay() {
-		return day;
+	public int getId() {
+		return id;
 	}
 
-	public double getDate() {
-		return date;
+	@Override
+	public String toString() {
+		return "Employee '" + name + "' with the assigned ID-Number '" + id + "'";
 	}
-
-	public double getTime() {
-		return time;
-	}
-
-	public Shift getShifts() {
-		return shifts;
-	}
-
-//	Wollte hier nur was austesten
-	Employee [] employees = new Employee[5];
 }
+
