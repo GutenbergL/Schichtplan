@@ -10,9 +10,8 @@ public class Main {
 
 		// User Program interaction:
 		UserInterface user = new UserInterface();
-//		user.userInterface();
+		user.userInterface();
 //		user.employeeMenu();
-		user.employeeMenu();
 		
 	}
 }

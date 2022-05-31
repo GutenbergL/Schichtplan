@@ -1,13 +1,17 @@
+import shiftPlan.Shift;
+
 public class Employee {
 
 	private String name;
-	private int id = 1000;
-	static int idUpp;
+	private int id;
+	static int idUpp = 1000;
+	Shift shifts;
 
 	public Employee(String name) {
 		idUpp++;
 		this.name = name;
 		this.id = idUpp;
+		
 	}
 
 	public String getName() {
@@ -20,7 +24,7 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee '" + name + "' with the assigned ID-Number '" + id + "'";
+		return "Employee: " + name + "\t|ID: " + id;
 	}
 }
 
