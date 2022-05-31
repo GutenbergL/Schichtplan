@@ -9,34 +9,6 @@ import java.io.File;
 public class Storage {
 	String[] list = null;
 
-//	public void storageDrive() {
-//		try (BufferedWriter writer = new BufferedWriter(new FileWriter("txt.txt"));
-//				BufferedReader reader = new BufferedReader(new FileReader(filename));) {
-//
-//			String input = " ";
-//			String[] list = null;
-//
-//			while ((input = reader.readLine()) != null) {
-//				if (!input.isEmpty()) {
-//					list = input.split(";");
-//
-//					try {
-//						String a = list[0];
-//						int b = Integer.parseInt(list[1]);
-//						Employee e = new Employee(a, b);
-//						System.out.println(e);
-//					} catch (NumberFormatException ex) {
-//						System.err.println("Invalid Name or ID");
-//					}
-//
-//				}
-//			}
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//
-//		}
-//	}
 
 	public static void main(String[] args) {
 		Storage ew = new Storage();
