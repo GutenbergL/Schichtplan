@@ -1,106 +1,223 @@
 package scheduler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Scanner;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.File;
 
 public class Application {
+	static File file = new File("output.txt");	
+	
 
-	public static void main(String[] args) {
-
-//		Employee e2 = new Employee("Thomas Jeffrey");
-//		Employee e3 = new Employee("Will Sanders");
-//		Employee e4 = new Employee("Schmidt Friedrich");
-//		Employee e5 = new Employee("Peter Eernst");
-//		Employee e6 = new Employee("Dieter Winfried");
-
+	static Scanner sc = new Scanner(System.in);
+	
+		public static void main(String[] args) {
+			
+																								/*Employee e2 = new Employee("Thomas Jeffrey");
+																							Employee e3 = new Employee("Will Sanders");
+																							Employee e4 = new Employee("Schmidt Friedrich");
+																							Employee e6 = new Employee("Dieter Winfried");*/
+																						
+		
+		
 		Scheduler.addNewEmployee("Sandra Bullock");
 		Scheduler.addNewEmployee("Will Sanders");
 		Scheduler.addNewEmployee("Schmidt Friedrich");
 		Scheduler.addNewEmployee("Peter Eernst");
 		Scheduler.addNewEmployee("Dieter Winfried");
 		Scheduler.addNewEmployee("Thomas Jeffrey");
-
-		startProgram();
-		/*
-		 * int breakP = 1; System.out.println("Press 1 to start"); Scanner sc = new
-		 * Scanner(System.in); char startProgramm = sc.next().charAt(0);
-		 * 
-		 * do { if (startProgramm == '1') {
-		 * System.out.println("What do you want to do?"); System.out.
-		 * println("%-5s| Manage Shifts%n%-5s| Manage Employees%n%-5s| Searchfunction"
-		 * .formatted("1", "2", "3")); char inputMainMenu = sc.next().charAt(0); switch
-		 * (inputMainMenu) { case '1': shiftMenu(sc); break; case '2': employeeMenu(sc);
-		 * break; case '3': searchMenu(sc); break; default:
-		 * System.out.println("Invalid Entry"); } } else {
-		 * System.out.println("Have a good day!"); breakP++; } } while (breakP <= 1);
-		 * sc.close();
-		 */
+			
+			try {
+				serialize();
+			} catch (NotSerializableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			startProgram();
+	
+		
+																			/*
+																							 * int breakP = 1; System.out.println("Press 1 to start"); Scanner sc = new
+																							 * Scanner(System.in); char startProgramm = sc.next().charAt(0);
+																							 * 
+																							 * do { if (startProgramm == '1') {
+																							 * System.out.println("What do you want to do?"); System.out.
+																							 * println("%-5s| Manage Shifts%n%-5s| Manage Employees%n%-5s| Searchfunction"
+																							 * .formatted("1", "2", "3")); char inputMainMenu = sc.next().charAt(0); switch
+																							 * (inputMainMenu) { case '1': shiftMenu(sc); break; case '2': employeeMenu(sc);
+																							 * break; case '3': searchMenu(sc); break; default:
+																							 * System.out.println("Invalid Entry"); } } else {
+																							 * System.out.println("Have a good day!"); breakP++; } } while (breakP <= 1);
+																							 * sc.close();
+																							 */
 	}
-
-	public static void shiftMenu(Scanner sc){
+	
+/*	------------------------------------------------------------------------------------------------------------------------------------------		
+																									*/
+	public static void shiftMenu(){
 		System.out.println(String.format("%-5s| Insert employee in a shift", "1"));
 		System.out.println(String.format("%-5s| Remove employee from shift", "2"));
 		System.out.println(String.format("%-5s| Show employees in current shifts", "3"));
+		System.out.println(String.format("%-5s| Back to Main menu", "5"));
 		int shiftMenu = sc.nextInt();
-		//Emma fragen wie am besten employee geholt werden soll, damit dieser entfernt werden kann
-		//employee sollte am besten über id reingeholt werden
+		
 		switch (shiftMenu) {
 		case 1:
-		Shift.addEmployeeToShift(Employee employee);
+		addEmployeeInShift();
 		break;
 		case 2:
-		Shift.removeEmployeeFromShift(Employee employee);
+		System.out.println("Enter the ID of the Employee you want to remove:");
+		int id2 = sc.nextInt();
+		Scheduler.deleteEmployeeFromShift(id2);
 		break;
 		case 3:
 		Scheduler.showTimeTable();
 		break;
+		case 5:
+			break;
 		}
+		startProgram();
 	}
+/*	------------------------------------------------------------------------------------------------------------------------------------------		
+																									*/
 
-	public static void employeeMenu(Scanner sc) {
+	public static void employeeMenu() {
 		System.out.println(String.format("%-5s| Add new employee", "1"));
 		System.out.println(String.format("%-5s| Remove employee", "2"));
 		System.out.println(String.format("%-5s| Show current employees", "3"));
+		System.out.println(String.format("%-5s| Back to Main menu", "5"));
 		int employeeMenu = sc.nextInt();
 		switch (employeeMenu) {
 		case 1:
-			String name = sc.next();
+			System.out.println("Enter the first name of the Employee");
+			String fname = sc.next();
+			System.out.println("Now enter the last name");
+			String lname = sc.next();
+			String name = fname +" "+ lname;
 			Scheduler.addNewEmployee(name);
 			break;
 		case 2:
-			Scheduler.removeEmployee(null);
+			int id = sc.nextInt();
+			
+			Scheduler.removeEmployee(id);
+			
 			break;
 		case 3:
 			Scheduler.showCurrentEmployees();
 			break;
+		case 5:
+			break;
 		}
+		startProgram();
 	}
+/*	------------------------------------------------------------------------------------------------------------------------------------------		
+																									*/
 
-	public static void searchMenu(Scanner sc) {
+	public static void searchMenu() {
 		System.out.println("What are you looking for?");
 		System.out.println(String.format("%-5s| Search for empty Shift", "1"));
 		System.out.println(String.format("%-5s| Search employees in a shift", "2"));
 		System.out.println(String.format("%-5s| Search for employee by ID", "3"));
+		System.out.println(String.format("%-5s| Back to Main menu", "5"));
 		int searchMenu = sc.nextInt();
 		switch (searchMenu) {
 		case 1:
 			Scheduler.showEmptyShifts();
 			break;
 		case 2:
-			Scheduler.searchEmployeesInShift(null, null);
+			searchEmployeesInShift();
 			break;
 		case 3:
-			Scheduler.showEmployeeShifts(null);
+			System.out.println("Please enter Employee ID");
+			int id = sc.nextInt();
+			Scheduler.showEmployeeShifts(id);
+			break;
+		case 5:
 			break;
 		}
 	}
+/*	------------------------------------------------------------------------------------------------------------------------------------------		
+																									*/
+	
+	public static void searchEmployeesInShift(){
+	
+			System.out.println("Please enter a day:");
+			System.out.println("0 | Monday\n1 | Tuesday\n2 | Wednesday\n3 | Thursday\n4 | Friday");
+			int day = sc.nextInt();
+			System.out.println("Please enter a shift:");
+			System.out.println("0 | Early shift\n1 | Late shift\n2 | Night shift\n");
+			int type = sc.nextInt();
+			Scheduler.printEmployeesInShift(WorkingDay.getTypeByOrdinal(day), ShiftType.getTypeByOrdinal(type));		
+			}
+/*	------------------------------------------------------------------------------------------------------------------------------------------		
+	schreibt Programm in die Speicherdatei 																									*/
+	public static void serialize()throws NotSerializableException{
+		
+	try{
 
+		FileOutputStream writeOutput = new FileOutputStream(file);
+		ObjectOutputStream writeObjectStream = new ObjectOutputStream(writeOutput);
+		writeObjectStream.writeObject(Scheduler.allEmployees);
+		writeObjectStream.close();
+		
+	}catch(IOException ioE){
+		System.err.println("File not Found or is empty!");
+		throw new NotSerializableException();
+	}
+		//object streams
+//		File Employee = new file();
+		//wie serialisiere ich eine liste 
+}
+/*------------------------------------------------------------------------------------------------------------------------------------------		
+
+	laedt Fortschritt aus Datei in das Programm
+*/
+	public static void loadDataFromFile(){
+		try{
+			ObjectInputStream readObjectStream = new ObjectInputStream(new FileInputStream(file));
+			//Frage an Emma wie speichere ich in genau die selbe HashMap und ob diese Methdode vielleicht 
+			Scheduler.allEmployees = (HashMap)readObjectStream.readObject();
+		}catch(IOException ioE){
+			System.err.println("File not found, make sure File exists");
+		}
+	}
+/*	------------------------------------------------------------------------------------------------------------------------------------------		
+		
+*/
+	public static void addEmployeeInShift(){
+		System.out.println("Enter the ID of the Employee you want to add:");
+		int id = sc.nextInt();
+		if(!Scheduler.allEmployees.containsKey(id)) {
+			throw new IllegalArgumentException("This Employee does not exist");
+		}
+		System.out.println("Please enter a day:");
+		System.out.println("0 | Monday\n1 | Tuesday\n2 | Wednesday\n3 | Thursday\n4 | Friday");
+		int day = sc.nextInt();
+		if(day < 0 || day > 4) {
+			throw new IllegalArgumentException();
+		}
+		System.out.println("Please enter a shift:");
+		System.out.println("0 | Early shift\n1 | Late shift\n2 | Night shift\n");
+		int type = sc.nextInt();
+		if(type < 0 || type > 3) {
+			throw new IllegalArgumentException();
+		}
+		Scheduler.insertEmployeeInShift(id, WorkingDay.getTypeByOrdinal(day), ShiftType.getTypeByOrdinal(type));
+	}
+	
+/*	------------------------------------------------------------------------------------------------------------------------------------------		
+	
+	//Startprogramm startet das gesamte Programm 
+*/	
 	public static void startProgram() {
+		Scheduler.initializeShifts();
 		int breakP = 1;
 		System.out.println("Press 1 to start");
-		Scanner sc = new Scanner(System.in);
 		char startProgramm = sc.next().charAt(0);
 
 		do {
@@ -111,20 +228,20 @@ public class Application {
 				char inputMainMenu = sc.next().charAt(0);
 				switch (inputMainMenu) {
 				case '1':
-					shiftMenu(sc);
+					shiftMenu();
 					break;
 				case '2':
-					employeeMenu(sc);
+					employeeMenu();
 					break;
 				case '3':
-					searchMenu(sc);
+					searchMenu();
 					break;
 				default:
-					System.out.println("Invalid Entry");
+					System.err.println("Invalid Entry");
 				}
-		// bei falscher eingabe wird Methode wiederholt
+		//Bedingung zum wiederholen von startProgramm bei flascher eingabe 
 			}else if(startProgramm != '1'){
-				System.err.println("Invalid Entry, try again");
+				System.err.println("Invalid Entry, please try again!");
 				startProgram(); 
 			}
 			else {

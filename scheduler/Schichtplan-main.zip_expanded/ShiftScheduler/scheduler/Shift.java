@@ -1,20 +1,21 @@
 package scheduler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class Shift {
+public class Shift implements Serializable{
 	
 	private ShiftType type;
 	private WorkingDay day;
-	//Static ?
-	private static ArrayList<Employee> shiftEmployees;
+	private ArrayList<Employee> shiftEmployees;
 	
-	public Shift(ShiftType type, WorkingDay day) {
+	public Shift(ShiftType type, WorkingDay day)  {
 		this.type = type;
 		this.day = day;
+		//Emma fragen ist grund für verdoppelungsbug
 		shiftEmployees = new ArrayList<>();
 	}
-
 	
 	public ShiftType getType() {
 		return type;
@@ -29,20 +30,20 @@ public class Shift {
 		return shiftEmployees;
 	}
 	
-	public static void removeEmployeeFromShift(Employee employee) {
+	public void removeEmployeeFromShift(Employee employee) {
 		shiftEmployees.remove(employee);
 		}
 	
-	//Static ? Emma fragen
-	public static void addEmployeeToShift(Employee employee) {
-		if(!Scheduler.allEmployees.contains(employee)) {
-			//throw new IllegalArgumentException("");
+
+	public void addEmployeeToShift(Employee employee) throws IllegalArgumentException {
+		if(!Scheduler.allEmployees.containsValue(employee)) {
+			throw new IllegalArgumentException("This Employee does not exist");
 		}
-		shiftEmployees.add(employee);
+		shiftEmployees.add(employee);		
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("%-15s|%-20s|%-20s", type.name, day.name, type.time);
+		return String.format("%-12s|%-10s|%-15s", type.name, day.name, type.time);
 	}
 }

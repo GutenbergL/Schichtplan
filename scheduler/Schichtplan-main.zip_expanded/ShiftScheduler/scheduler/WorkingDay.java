@@ -1,16 +1,29 @@
 package scheduler;
 
 public enum WorkingDay {
-	MONDAY("Monday", 0),
-	TUESDAY("Tuesday", 1),
-	WEDNESDAY("Wednesday", 2),
-	THURSDAY("Thursday", 3),
-	FRIDAY("Friday", 4);
+	MONDAY("Monday"),
+	TUESDAY("Tuesday"),
+	WEDNESDAY("Wednesday"),
+	THURSDAY("Thursday"),
+	FRIDAY("Friday");
 	public String name;
-	public int index;
+
 	
-	WorkingDay(String name, int index){
+	WorkingDay(String name){
 		this.name = name;
-		this.index = index;
 	}
+
+	public static WorkingDay getTypeByOrdinal(int ordinal) {
+        for(WorkingDay day : WorkingDay.values()) {
+            if(day.ordinal() == ordinal) {
+                return day;
+            }
+        }
+        return null;
+    }
+
 }
+
+
+	
+

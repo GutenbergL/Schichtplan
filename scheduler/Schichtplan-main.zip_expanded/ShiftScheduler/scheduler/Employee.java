@@ -1,6 +1,8 @@
 package scheduler;
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable{
 
 	private String name;
 	private int id;
