@@ -23,27 +23,29 @@ public class Scheduler {
 		allEmployees.put(e.getId(), e);
 		System.out.println(e + "has been added");
 	}
-	
+
 //	public static void addNewEmployee(Employee employee) {
 //		empId.put(employee.getId(), employee);
 //			allEmployees.add(new Employee(name));
 //	}
 
-	public static void removeEmployee(int id) throws IllegalArgumentException{
-		if(!allEmployees.containsKey(id)) {
+	public static void removeEmployee(int id) throws IllegalArgumentException {
+		if (!allEmployees.containsKey(id)) {
 			throw new IllegalArgumentException("This Employee does not exist");
 		}
 		System.out.println(allEmployees.get(id).toString() + "has been removed");
 		allEmployees.remove(id);
-		//Methode zum speichern der Datei, nachdem ein Nutzer aus dem Programm gelöscht wurde
-		try{
+		// Methode zum speichern der Datei, nachdem ein Nutzer aus dem Programm gelöscht
+		// wurde
+		try {
 			Application.serialize();
-		}catch(NotSerializableException nsE){
+		} catch (NotSerializableException nsE) {
 			System.err.println("File can not be safed!");
 		}
-		/*_____________________________________________________________________________________
-		*/
-		
+		/*
+		 * _____________________________________________________________________________________
+		 */
+
 //		for (Shift s : shifts) {
 //			if (s.getShiftEmployees().contains(e)) {
 //				s.getShiftEmployees().remove(e);
@@ -61,7 +63,6 @@ public class Scheduler {
 		System.out.println("+----+--------------------+\n");
 	}
 
-
 	public static void printEmployeesInShift(WorkingDay day, ShiftType type) {
 //		if() {
 //			throw new IllegalArgumentException("Invalid entry");
@@ -76,9 +77,14 @@ public class Scheduler {
 	}
 
 	public static void showEmployeeShifts(int id) {
-		if(!allEmployees.containsKey(id)) {
+		if (!allEmployees.containsKey(id)) {
 			throw new IllegalArgumentException("This Employee does not exist");
 		}
+//		for (Shift s : shifts) {
+//			if (s.getShiftEmployees().contains(allEmployees.get(id))) {
+//				throw new IllegalArgumentException("This Employee is in no Shift");
+//			}
+//		}
 		Employee e = allEmployees.get(id);
 		System.out.println(e + "works in:");
 		for (Shift s : shifts) {
@@ -100,15 +106,24 @@ public class Scheduler {
 	}
 
 	public static void showTimeTable() {
+		for (Shift s : shifts) {
+			System.out.println("+---------------+-------------------------+");
+			System.out.println("|%15s|%-25s|".formatted("", s.getDay().name));
+			System.out.println("|%-15s|%-25s|".formatted(s.getType().name, s.getType().time));
+			for (Employee e : s.getShiftEmployees()) {
+				System.out.println("|%-15s|%-23s|".formatted("", e.toString()));
+			}
+
+		}
 	}
 
 	public static void insertEmployeeInShift(int id, WorkingDay day, ShiftType type) {
 		Employee e = allEmployees.get(id);
 		for (Shift s : shifts) {
 			if (s.getDay().equals(day) && s.getType().equals(type)) {
-					if (!s.getShiftEmployees().contains(e)) {
-						s.addEmployeeToShift(e);
-						System.out.println(e + "has been added to " + s);
+				if (!s.getShiftEmployees().contains(e)) {
+					s.addEmployeeToShift(e);
+					System.out.println(e + "has been added to " + s);
 				}
 			}
 		}

@@ -34,7 +34,6 @@ public class Application {
 			try {
 				serialize();
 			} catch (NotSerializableException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -71,9 +70,9 @@ public class Application {
 		addEmployeeInShift();
 		break;
 		case 2:
-		System.out.println("Enter the ID of the Employee you want to remove:");
-		int id2 = sc.nextInt();
-		Scheduler.deleteEmployeeFromShift(id2);
+		System.out.println("Enter the ID of the Employee you want to remove from shifts:");
+		int id = sc.nextInt();
+		Scheduler.deleteEmployeeFromShift(id);
 		break;
 		case 3:
 		Scheduler.showTimeTable();
@@ -81,7 +80,6 @@ public class Application {
 		case 5:
 			break;
 		}
-		startProgram();
 	}
 /*	------------------------------------------------------------------------------------------------------------------------------------------		
 																									*/
@@ -102,8 +100,8 @@ public class Application {
 			Scheduler.addNewEmployee(name);
 			break;
 		case 2:
+			System.out.println("Enter the ID of the Employee you want to remove: ");
 			int id = sc.nextInt();
-			
 			Scheduler.removeEmployee(id);
 			
 			break;
@@ -113,7 +111,6 @@ public class Application {
 		case 5:
 			break;
 		}
-		startProgram();
 	}
 /*	------------------------------------------------------------------------------------------------------------------------------------------		
 																									*/
@@ -145,7 +142,6 @@ public class Application {
 																									*/
 	
 	public static void searchEmployeesInShift(){
-	
 			System.out.println("Please enter a day:");
 			System.out.println("0 | Monday\n1 | Tuesday\n2 | Wednesday\n3 | Thursday\n4 | Friday");
 			int day = sc.nextInt();
@@ -159,12 +155,10 @@ public class Application {
 	public static void serialize()throws NotSerializableException{
 		
 	try{
-
 		FileOutputStream writeOutput = new FileOutputStream(file);
 		ObjectOutputStream writeObjectStream = new ObjectOutputStream(writeOutput);
 		writeObjectStream.writeObject(Scheduler.allEmployees);
 		writeObjectStream.close();
-		
 	}catch(IOException ioE){
 		System.err.println("File not Found or is empty!");
 		throw new NotSerializableException();
@@ -181,7 +175,7 @@ public class Application {
 		try{
 			ObjectInputStream readObjectStream = new ObjectInputStream(new FileInputStream(file));
 			//Frage an Emma wie speichere ich in genau die selbe HashMap und ob diese Methdode vielleicht 
-			Scheduler.allEmployees = (HashMap)readObjectStream.readObject();
+//			Scheduler.allEmployees = (HashMap)readObjectStream.readObject();
 		}catch(IOException ioE){
 			System.err.println("File not found, make sure File exists");
 		}
@@ -189,7 +183,7 @@ public class Application {
 /*	------------------------------------------------------------------------------------------------------------------------------------------		
 		
 */
-	public static void addEmployeeInShift(){
+	public static void addEmployeeInShift() throws IllegalArgumentException{
 		System.out.println("Enter the ID of the Employee you want to add:");
 		int id = sc.nextInt();
 		if(!Scheduler.allEmployees.containsKey(id)) {
@@ -242,7 +236,6 @@ public class Application {
 		//Bedingung zum wiederholen von startProgramm bei flascher eingabe 
 			}else if(startProgramm != '1'){
 				System.err.println("Invalid Entry, please try again!");
-				startProgram(); 
 			}
 			else {
 				System.out.println("Have a good day!");
