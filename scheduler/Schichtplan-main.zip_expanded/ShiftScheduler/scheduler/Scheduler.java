@@ -1,14 +1,22 @@
 package scheduler;
 
-import java.io.NotSerializableException;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Scheduler {
 
-//	static ArrayList<Employee> allEmployees = new ArrayList<>();
-	static HashMap<Integer, Employee> allEmployees = new HashMap<>();
-	static ArrayList<Shift> shifts = new ArrayList<>();
+	private static HashMap<Integer, Employee> allEmployees = new HashMap<>();
+	private static ArrayList<Shift> shifts = new ArrayList<>();
+
 
 	public static void initializeShifts() {
 		for (WorkingDay day : WorkingDay.values()) {
@@ -24,10 +32,6 @@ public class Scheduler {
 		System.out.println(e + "has been added");
 	}
 
-//	public static void addNewEmployee(Employee employee) {
-//		empId.put(employee.getId(), employee);
-//			allEmployees.add(new Employee(name));
-//	}
 
 	public static void removeEmployee(int id) throws IllegalArgumentException {
 		if (!allEmployees.containsKey(id)) {
@@ -35,22 +39,6 @@ public class Scheduler {
 		}
 		System.out.println(allEmployees.get(id).toString() + "has been removed");
 		allEmployees.remove(id);
-		// Methode zum speichern der Datei, nachdem ein Nutzer aus dem Programm gelöscht
-		// wurde
-		try {
-			Application.serialize();
-		} catch (NotSerializableException nsE) {
-			System.err.println("File can not be safed!");
-		}
-		/*
-		 * _____________________________________________________________________________________
-		 */
-
-//		for (Shift s : shifts) {
-//			if (s.getShiftEmployees().contains(e)) {
-//				s.getShiftEmployees().remove(e);
-//			}
-//		}
 	}
 
 	public static void showCurrentEmployees() {
@@ -64,9 +52,6 @@ public class Scheduler {
 	}
 
 	public static void printEmployeesInShift(WorkingDay day, ShiftType type) {
-//		if() {
-//			throw new IllegalArgumentException("Invalid entry");
-//		}
 		for (Shift s : shifts) {
 			if (s.getDay() == day && s.getType() == type) {
 				for (Employee e : s.getShiftEmployees()) {
@@ -76,15 +61,10 @@ public class Scheduler {
 		}
 	}
 
-	public static void showEmployeeShifts(int id) {
+	public static void showEmployeeShifts(int id) throws IllegalArgumentException {
 		if (!allEmployees.containsKey(id)) {
 			throw new IllegalArgumentException("This Employee does not exist");
 		}
-//		for (Shift s : shifts) {
-//			if (s.getShiftEmployees().contains(allEmployees.get(id))) {
-//				throw new IllegalArgumentException("This Employee is in no Shift");
-//			}
-//		}
 		Employee e = allEmployees.get(id);
 		System.out.println(e + "works in:");
 		for (Shift s : shifts) {
@@ -115,6 +95,7 @@ public class Scheduler {
 			}
 
 		}
+		System.out.println("+---------------+-------------------------+");
 	}
 
 	public static void insertEmployeeInShift(int id, WorkingDay day, ShiftType type) {
@@ -134,14 +115,49 @@ public class Scheduler {
 			s.removeEmployeeFromShift(allEmployees.get(id));
 		}
 	}
-
-//	public static Employee getByID(int id) {
-//		Employee e = null;
-//		for (Employee emp : allEmployees) {
-//			if (id == emp.getId()) {
-//				e = emp;
-//			}
-//		}
-//		return e;
-//	}
+	public static void printTimeTableToFile(){
+		File print = new File("Timetable.txt");
+		try(BufferedWriter writer = new BufferedWriter(new FileWriter(print))){
+			for(Shift s : shifts){
+			writer.write("+---------------+-------------------------+");
+			writer.write(System.lineSeparator());
+			writer.write("|%-15s|%-25s|".formatted("", s.getDay().name));
+			writer.write(System.lineSeparator());
+			writer.write("|%-15s|%-25s|".formatted(s.getType().name, s.getType().time));
+			writer.write(System.lineSeparator());
+			for(Employee e : s.getShiftEmployees()){
+				writer.write("|%-15s|%-23s|".formatted("", e.toString()));
+				writer.write(System.lineSeparator());
+			}
+		}
+			writer.write("+---------------+-------------------------+");
+		System.out.println("File printed!");
+		}catch(IOException ioE){
+			System.err.println("Can not write to file");
+		}
+	
+	}
+	public static void serialize() {
+		
+		try (ObjectOutputStream writeObjectStream = new ObjectOutputStream(new FileOutputStream("scheduler.ser"));){
+			writeObjectStream.writeInt(Employee.getIdCounter());
+			writeObjectStream.writeObject(Scheduler.allEmployees);
+			writeObjectStream.writeObject(shifts);
+		} catch(IOException ioE){
+			System.out.println("A problem occurred");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void deserialize() {
+		try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("scheduler.ser"));){
+			Employee.setIdCounter(in.readInt());
+			allEmployees = (HashMap<Integer,Employee>) in.readObject();
+			shifts = (ArrayList<Shift>) in.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 }
+		
+	

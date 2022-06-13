@@ -2,7 +2,6 @@ package scheduler;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Shift implements Serializable{
 	
@@ -13,7 +12,6 @@ public class Shift implements Serializable{
 	public Shift(ShiftType type, WorkingDay day)  {
 		this.type = type;
 		this.day = day;
-		//Emma fragen ist grund für verdoppelungsbug
 		shiftEmployees = new ArrayList<>();
 	}
 	
@@ -35,10 +33,8 @@ public class Shift implements Serializable{
 		}
 	
 
-	public void addEmployeeToShift(Employee employee) throws IllegalArgumentException {
-		if(!Scheduler.allEmployees.containsValue(employee)) {
-			throw new IllegalArgumentException("This Employee does not exist");
-		}
+	public void addEmployeeToShift(Employee employee) {
+
 		shiftEmployees.add(employee);		
 	}
 	

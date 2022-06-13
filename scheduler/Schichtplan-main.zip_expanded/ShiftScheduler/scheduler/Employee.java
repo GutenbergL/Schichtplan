@@ -6,14 +6,21 @@ public class Employee implements Serializable{
 
 	private String name;
 	private int id;
-	static int idCounter;
-	
+	private static int idCounter;
+
 	public Employee(String name) {
 		idCounter++;
 		this.name = name;
 		this.id = idCounter;
 	}
 	
+	public static int getIdCounter() {
+		return idCounter;
+	}
+	
+	public static void setIdCounter(int idCounter) {
+		Employee.idCounter = idCounter;
+	}
 
 	public String getName() {
 		return name;
